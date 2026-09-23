@@ -482,7 +482,7 @@ function YBPLCStatusChange(strLuaDEID)
                 lua.DebugEx(strLuaDEID, "已有作业，创建动作队列", os.date("%Y-%m-%d %H:%M:%S"))
                 -- 如果是出库作业
                 if cntrop_info.op_def_name == "库前出库" then
-                        -- 查询 当前起点的输送线任务
+                    -- 查询 当前起点的输送线任务
                     local strCondition = "S_START_LOC = '" .. unit_code .. "' AND N_B_STATE IN (0,1)"
                     lua.DebugEx(strLuaDEID, "strCondition", strCondition)
                     nRet, query_task = m3.GetDataObjByCondition(strLuaDEID, "Task", strCondition, "T_CREATE DESC")
@@ -505,10 +505,11 @@ function YBPLCStatusChange(strLuaDEID)
                     if (isexit == 'yes') then
                         return
                     end
-                    xcwms_base.CreatMqEqaction(strLuaDEID, query_task.op_code, unit_code, 7, "库前堆垛机出库放货口",
-                        query_task.cntr_code, 4, task_no, 0)
+                    xcwms_base.CreatMqEqaction(strLuaDEID, query_task.op_code, unit_code, 7,
+                        "库前堆垛机出库放货口", query_task.cntr_code, 4, task_no, 0)
                 else
-                    local strCondition = "S_EQ_CODE = '" .. unit_code .. "' AND S_OP_CODE = '" .. cntrop_info.code .. "'" -- AND N_B_STATE != 1
+                    local strCondition = "S_EQ_CODE = '" .. unit_code .. "' AND S_OP_CODE = '" .. cntrop_info.code ..
+                                             "'" -- AND N_B_STATE != 1
                     nRet, isexit = mobox.existThisData(strLuaDEID, "MQ_EQAction", strCondition)
                     if (nRet ~= 0) then
                         lua.Stop(strLuaDEID, "调用方法existThisData出错" .. isexit)
@@ -517,8 +518,8 @@ function YBPLCStatusChange(strLuaDEID)
                     if (isexit == 'yes') then
                         return
                     end
-                    xcwms_base.CreatMqEqaction(strLuaDEID, cntrop_info.code, unit_code, 1, "库前入库口", cntr_code, 4,
-                        "", 0)
+                    xcwms_base.CreatMqEqaction(strLuaDEID, cntrop_info.code, unit_code, 1, "库前入库口", cntr_code,
+                        4, "", 0)
                 end
             end
         end
